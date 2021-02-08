@@ -30,6 +30,12 @@ So let's get started.
   - [再探对象](#再探对象)
     - [内建对象](#内建对象)
     - [宿主对象](#宿主对象)
+- [DOM](#dom)
+  - [节点](#节点)
+    - [元素节点](#元素节点)
+    - [文本节点](#文本节点)
+    - [属性节点](#属性节点)
+    - [获取元素](#获取元素)
  
 
 
@@ -41,7 +47,7 @@ So let's get started.
 # What is the JavaScript?  
 JavaScript是Netscape公司与Sun公司合作开发的使网页具有交互能力的程序设计语言。  
 JavaScript是一种脚本语言，通常只能通过Web浏览器去完成一些操作而不能像普通意义上的程序那样独立运行。
-
+_______________________________________________
 # JavaScript 语法  
 ## 语句    
 JavaSrcipt语句只需要把不同的语句放在不同行上就可以分隔他们，例如:
@@ -256,3 +262,80 @@ beatles.length;
 ### 宿主对象  
 由浏览器提供的预定义对象被称为*宿主对象*(host object), 宿主对象包括From，Image和Element等。
    
+
+__________________________________
+
+# DOM
+DOM的含义为面向文档模型，其中的D为document，O为object，M为model。   
+
+## 节点   
+DOM中有许多不同类型的节点，其中有三种基本的节点，分别为元素节点(element node)、文本节点(text node)和属性节点(attribute node)。
+
+### 元素节点    
+DOM的原子是元素节点，元素可以包含其他的元素，没有被包含在其他元素里的唯一元素是<html>元素，他是我们的节点树的根节点。    
+### 文本节点   
+在XHTML文档中，文本节点总是被包含在元素节点的内部，例如:
+```
+<p title="a gentle reminder">Don't forget to buy this stuff.</p>
+```
+但并非所有元素节点都包含有文本节点。
+### 属性节点   
+属性节点用来对元素做出更具体的描述，如：
+```
+<p title="a gentle reminder">Don't forget to buy this stuff.</p>
+```   
+在DOM中，`title="a gentle reminder"`是一个属性节点，属性节点总是被包含在元素节点中。并非所有的元素都包含着属性，但所有的属性都被元素包含。    
+
+### 获取元素  
+有三种DOM方法可以获取元素节点，分别是通过元素ID，通过标签名字和通过类名字来获取。    
+
+- getElementById   
+  DOM提供了一个名为getElementById的方法，这个方法将返回一个与那个有着给定id属性值的元素节点对应的对象。它是document对象特有的函数，在脚本代码中，函数名的后面必须跟有一对圆括号，这对圆括号包含着函数的参数。getElementById方法只有一个参数：你想获得的那个元素的id属性的值，这个id值必须放在单引号或双引号里。
+  ```
+  document.getElementById(id)
+
+  document.getElementById("purchases")
+  ```
+- getElementsByTagName   
+  getElementsByTagName方法返回一个对象数组，每个对象分别对应着文档里有着给定标签的一个元素，类似于getElementById，这个方法也是只有一个参数的函数，它的参数是标签的名字：   
+  ```
+  element.getElementsByTagName(tag)
+
+  element.getElementsByTagName("li")
+
+  alert(document.getElementsByTagName("li").length);
+  
+  var items = document.getElementsByTagName("li");
+  for(var i=0;i < items.length; i++) {
+    alert(typeof items[i]);
+  }
+  ```
+- getElementsByClassName    
+  getElementsByClassName可以让我们能够通过class属性中的类名来访问元素。
+  ```
+  getElementsByClassName(class)
+
+  document.getElementsByClassName("sale")
+
+  alert(document.getElementsByClassName("important sale").length);
+
+  //适用于新老浏览器的搜索类名函数
+  function getElementsByClassName(node, classname) {
+    if (node.getElementsByClassName){
+      //使用现有方法
+      return node.getElementsByClassName(classname);
+    } else {
+      var results = new Array();
+      var elems = node.getElementsByTagName("*");
+      for(var i=0; i<elems.length; i++) {
+        if (elems[i].className.indexOf(classname) != -1) {
+          results[results.length] = elems[i];
+        }
+      }
+      return results;
+    }
+  }
+  ```
+  
+
+
